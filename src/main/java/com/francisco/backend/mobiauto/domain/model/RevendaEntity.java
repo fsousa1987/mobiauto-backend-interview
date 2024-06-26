@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Revenda {
+public class RevendaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
