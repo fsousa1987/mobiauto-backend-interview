@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    public static final String INVALID_PARAMETER_REQUEST = "Invalid request, please check the parameters and try again";
+    public static final String INVALID_PARAMETER_REQUEST = "Requisição inválida, por favor cheque os " +
+            "parâmetros e tente novamente";
 
     @ResponseBody
     @ExceptionHandler(value = {IllegalArgumentException.class})
