@@ -1,8 +1,10 @@
 package com.francisco.backend.mobiauto.domain.service.impl;
 
+import com.francisco.backend.mobiauto.api.dto.request.UsuarioRemocaoRequest;
 import com.francisco.backend.mobiauto.api.dto.request.UsuarioRequest;
 import com.francisco.backend.mobiauto.api.dto.response.UsuarioResponse;
 import com.francisco.backend.mobiauto.api.exceptionhandler.exceptions.UsuarioJaExistenteException;
+import com.francisco.backend.mobiauto.api.exceptionhandler.exceptions.UsuarioNaoEncontradoException;
 import com.francisco.backend.mobiauto.domain.model.UsuarioModel;
 import com.francisco.backend.mobiauto.domain.repository.UsuarioRepository;
 import com.francisco.backend.mobiauto.domain.service.UsuarioService;
@@ -31,6 +33,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         UsuarioModel usuarioModel = usuarioRepository.save(usuario.get());
 
         return usuarioModelParaUsuarioResponse(usuarioModel);
+    }
+
+    @Override
+    public void remover(UsuarioRemocaoRequest usuarioRemocaoRequest) {
+        usuarioRepository.findByEmail(usuarioRemocaoRequest.getEmail())
+                .ifPresentOrElse(usuarioRepository::delete, () -> {
+                    throw new UsuarioNaoEncontradoException("Usuário não encontrado");
+                });
     }
 
     private UsuarioModel construirUsuarioModel(UsuarioRequest usuarioRequest) {

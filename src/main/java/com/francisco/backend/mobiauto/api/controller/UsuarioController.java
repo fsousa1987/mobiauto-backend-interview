@@ -1,15 +1,13 @@
 package com.francisco.backend.mobiauto.api.controller;
 
+import com.francisco.backend.mobiauto.api.dto.request.UsuarioRemocaoRequest;
 import com.francisco.backend.mobiauto.api.dto.request.UsuarioRequest;
 import com.francisco.backend.mobiauto.api.dto.response.UsuarioResponse;
 import com.francisco.backend.mobiauto.domain.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/usuarios")
@@ -22,6 +20,12 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> cadastrar(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         UsuarioResponse usuarioResponse = usuarioService.cadastrar(usuarioRequest);
         return ResponseEntity.ok(usuarioResponse);
+    }
+
+    @DeleteMapping("/remover")
+    public ResponseEntity<Void> remover(@RequestBody @Valid UsuarioRemocaoRequest usuarioRemocaoRequest) {
+        usuarioService.remover(usuarioRemocaoRequest);
+        return ResponseEntity.noContent().build();
     }
 
 }
