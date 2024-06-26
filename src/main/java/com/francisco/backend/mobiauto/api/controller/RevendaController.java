@@ -6,13 +6,11 @@ import com.francisco.backend.mobiauto.domain.service.RevendaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/revendas")
@@ -29,6 +27,12 @@ public class RevendaController {
                 .path("/{id}")
                 .buildAndExpand(revendaResponse.getId()).toUri();
         return ResponseEntity.created(uri).body(revendaResponse);
+    }
+
+    @GetMapping("/{revendaId}")
+    public ResponseEntity<RevendaResponse> buscarRevendaPorId(@PathVariable UUID revendaId) {
+        RevendaResponse revendaResponse = revendaService.buscarRevendaPorId(revendaId);
+        return ResponseEntity.ok().body(revendaResponse);
     }
 
 }
