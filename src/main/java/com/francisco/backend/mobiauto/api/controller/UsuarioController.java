@@ -7,6 +7,7 @@ import com.francisco.backend.mobiauto.domain.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    @PreAuthorize("hasAnyRole('ROLE_PROPRIETARIO', 'ROLE_ADMIN')")
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioResponse> cadastrar(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         UsuarioResponse usuarioResponse = usuarioService.cadastrar(usuarioRequest);

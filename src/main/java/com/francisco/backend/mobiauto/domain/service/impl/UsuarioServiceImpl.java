@@ -49,6 +49,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .fullName(usuarioRequest.getNome())
                 .email(usuarioRequest.getEmail())
                 .password(passwordEncoder.encode(usuarioRequest.getSenha()))
+                .usuarioPerfil(usuarioRequest.getPerfil())
                 .build();
     }
 

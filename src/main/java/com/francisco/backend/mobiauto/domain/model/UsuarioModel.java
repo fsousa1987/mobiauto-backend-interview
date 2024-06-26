@@ -1,13 +1,17 @@
 package com.francisco.backend.mobiauto.domain.model;
 
+import com.francisco.backend.mobiauto.api.enums.UsuarioPerfil;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Setter
 @Getter
@@ -32,9 +36,12 @@ public class UsuarioModel implements UserDetails {
     @Column(nullable = false, name = "senha")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UsuarioPerfil usuarioPerfil;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return getAuthoritiesForPerfil(usuarioPerfil);
     }
 
     @Override
@@ -60,6 +67,17 @@ public class UsuarioModel implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthoritiesForPerfil(UsuarioPerfil perfil) {
+        return switch (perfil) {
+            case ADMIN -> Stream.of("ROLE_ADMIN", "ROLE_PROPRIETARIO")
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+            case PROPRIETARIO -> List.of(new SimpleGrantedAuthority("ROLE_PROPRIETARIO"));
+            case GERENTE -> List.of(new SimpleGrantedAuthority("ROLE_GERENTE"));
+            default -> List.of(new SimpleGrantedAuthority("ROLE_ASSISTENTE"));
+        };
     }
 
 }

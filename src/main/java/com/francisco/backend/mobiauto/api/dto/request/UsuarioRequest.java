@@ -1,9 +1,14 @@
 package com.francisco.backend.mobiauto.api.dto.request;
 
+import com.francisco.backend.mobiauto.api.enums.UsuarioPerfil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class UsuarioRequest {
 
@@ -16,5 +21,8 @@ public class UsuarioRequest {
 
     @NotNull(message = "O campo senha precisa ser preenchido")
     private String senha;
+
+    @NotNull(message = "O campo usuário perfil precisa ser preenchido")
+    private UsuarioPerfil perfil;
 
 }
