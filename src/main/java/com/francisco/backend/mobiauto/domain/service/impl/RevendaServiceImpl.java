@@ -7,7 +7,11 @@ import com.francisco.backend.mobiauto.api.exceptionhandler.exceptions.RevendaNao
 import com.francisco.backend.mobiauto.domain.model.RevendaModel;
 import com.francisco.backend.mobiauto.domain.repository.RevendaRepository;
 import com.francisco.backend.mobiauto.domain.service.RevendaService;
+import com.francisco.backend.mobiauto.domain.service.factory.RevendaFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +41,14 @@ public class RevendaServiceImpl implements RevendaService {
         RevendaModel revendaModel = revendaRepository.findById(id).orElseThrow(()
                 -> new RevendaNaoEncontradaException("Revenda não foi encontrada"));
         return revendaModelParaRevendaResponse(revendaModel);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RevendaResponse> buscarTodasAsRevendas(int pagina, int quantidadePorPagina) {
+        Pageable pageable = PageRequest.of(pagina, quantidadePorPagina);
+        Page<RevendaModel> revendasEncontradas = revendaRepository.findAll(pageable);
+        return revendasEncontradas.map(RevendaFactory::revendaModelParaRevendaResponse);
     }
 
     private void checkExistenciaCnpj(RevendaRequest revendaRequest) {

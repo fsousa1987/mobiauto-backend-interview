@@ -5,6 +5,7 @@ import com.francisco.backend.mobiauto.api.dto.response.RevendaResponse;
 import com.francisco.backend.mobiauto.domain.service.RevendaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,6 +34,15 @@ public class RevendaController {
     public ResponseEntity<RevendaResponse> buscarRevendaPorId(@PathVariable UUID revendaId) {
         RevendaResponse revendaResponse = revendaService.buscarRevendaPorId(revendaId);
         return ResponseEntity.ok().body(revendaResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<RevendaResponse>> buscarTodasAsRevendas(
+            @RequestParam(value = "pagina", defaultValue = "0") int pagina,
+            @RequestParam(value = "quantidadePorPagina", defaultValue = "10") int quantidadePorPagina) {
+
+        Page<RevendaResponse> revendasEncontradas = revendaService.buscarTodasAsRevendas(pagina, quantidadePorPagina);
+        return ResponseEntity.ok().body(revendasEncontradas);
     }
 
 }
