@@ -45,4 +45,11 @@ public class RevendaController {
         return ResponseEntity.ok().body(revendasEncontradas);
     }
 
+    @PutMapping("/{revendaId}")
+    public ResponseEntity<RevendaResponse> atualizarRevenda(@PathVariable UUID revendaId,
+                                                            @Valid @RequestBody RevendaRequest revendaRequest) {
+        RevendaResponse revendaAtualizada = revendaService.atualizarRevenda(revendaId, revendaRequest);
+        return ResponseEntity.ok().body(revendaAtualizada);
+    }
+
 }

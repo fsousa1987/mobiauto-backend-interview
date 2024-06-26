@@ -14,4 +14,6 @@ public interface RevendaService {
 
     Page<RevendaResponse> buscarTodasAsRevendas(int pagina, int quantidadePorPagina);
 
+    RevendaResponse atualizarRevenda(UUID revendaId, RevendaRequest revendaRequest);
+
 }

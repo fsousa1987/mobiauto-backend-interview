@@ -30,16 +30,15 @@ public class RevendaServiceImpl implements RevendaService {
     @Transactional
     public RevendaResponse criarRevenda(RevendaRequest revendaRequest) {
         checkExistenciaCnpj(revendaRequest);
-        RevendaModel revendaModel = revendaRequestParaRevendaModel(revendaRequest);
+        RevendaModel revendaModel = revendaRequestParaRevendaModel(revendaRequest, null);
         revendaModel = revendaRepository.save(revendaModel);
         return revendaModelParaRevendaResponse(revendaModel);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public RevendaResponse buscarRevendaPorId(UUID id) {
-        RevendaModel revendaModel = revendaRepository.findById(id).orElseThrow(()
-                -> new RevendaNaoEncontradaException("Revenda não foi encontrada"));
+    public RevendaResponse buscarRevendaPorId(UUID revendaId) {
+        RevendaModel revendaModel = checkSeRevendaExiste(revendaId);
         return revendaModelParaRevendaResponse(revendaModel);
     }
 
@@ -51,10 +50,32 @@ public class RevendaServiceImpl implements RevendaService {
         return revendasEncontradas.map(RevendaFactory::revendaModelParaRevendaResponse);
     }
 
+    @Override
+    @Transactional
+    public RevendaResponse atualizarRevenda(UUID revendaId, RevendaRequest revendaRequest) {
+        RevendaModel revendaModel = checkSeRevendaExiste(revendaId);
+        if (!revendaModel.getCnpj().equals(revendaRequest.getCnpj())) {
+            checkExistenciaCnpj(revendaRequest);
+        }
+        return getRevendaResponse(revendaId, revendaRequest);
+    }
+
+    private RevendaResponse getRevendaResponse(UUID revendaId, RevendaRequest revendaRequest) {
+        RevendaModel revendaModel;
+        revendaModel = revendaRequestParaRevendaModel(revendaRequest, revendaId);
+        revendaModel = revendaRepository.save(revendaModel);
+        return revendaModelParaRevendaResponse(revendaModel);
+    }
+
     private void checkExistenciaCnpj(RevendaRequest revendaRequest) {
         if (revendaRepository.findByCnpj(revendaRequest.getCnpj()).isPresent()) {
             throw new CnpjJaExistenteException("CNPJ já cadastrado");
         }
+    }
+
+    private RevendaModel checkSeRevendaExiste(UUID revendaId) {
+        return revendaRepository.findById(revendaId).orElseThrow(()
+                -> new RevendaNaoEncontradaException("Revenda não foi encontrada"));
     }
 
 }
