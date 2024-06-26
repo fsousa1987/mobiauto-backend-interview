@@ -52,4 +52,10 @@ public class RevendaController {
         return ResponseEntity.ok().body(revendaAtualizada);
     }
 
+    @DeleteMapping("/{revendaId}")
+    public ResponseEntity<Void> removerRevenda(@PathVariable UUID revendaId) {
+        revendaService.removerRevenda(revendaId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

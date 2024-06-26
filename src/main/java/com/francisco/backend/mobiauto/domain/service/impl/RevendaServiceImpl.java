@@ -60,6 +60,13 @@ public class RevendaServiceImpl implements RevendaService {
         return getRevendaResponse(revendaId, revendaRequest);
     }
 
+    @Override
+    @Transactional
+    public void removerRevenda(UUID revendaId) {
+        RevendaModel revendaModel = checkSeRevendaExiste(revendaId);
+        revendaRepository.delete(revendaModel);
+    }
+
     private RevendaResponse getRevendaResponse(UUID revendaId, RevendaRequest revendaRequest) {
         RevendaModel revendaModel;
         revendaModel = revendaRequestParaRevendaModel(revendaRequest, revendaId);

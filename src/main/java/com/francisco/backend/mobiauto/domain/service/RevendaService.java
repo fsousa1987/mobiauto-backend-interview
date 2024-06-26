@@ -16,4 +16,6 @@ public interface RevendaService {
 
     RevendaResponse atualizarRevenda(UUID revendaId, RevendaRequest revendaRequest);
 
+    void removerRevenda(UUID revendaId);
+
 }
