@@ -2,6 +2,7 @@ package com.francisco.backend.mobiauto.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class RevendaEntity {
+@Table(name = "revenda")
+public class RevendaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,7 +29,8 @@ public class RevendaEntity {
     private String cnpj;
 
     @NotBlank(message = "Nome social é obrigatório")
-    @Column(nullable = false)
+    @Size(max = 120, message = "Nome social deve ter no máximo 120 caracteres")
+    @Column(name = "nome_social", nullable = false, length = 120)
     private String nomeSocial;
 
 }

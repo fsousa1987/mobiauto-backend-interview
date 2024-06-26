@@ -15,11 +15,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/revendas")
+@RequestMapping(path = "/api/revendas")
 @RequiredArgsConstructor
 public class RevendaController {
 
-    private RevendaService revendaService;
+    private final RevendaService revendaService;
 
     @PostMapping
     public ResponseEntity<RevendaResponse> criarRevenda(@Valid @RequestBody RevendaRequest revendaRequest) {
