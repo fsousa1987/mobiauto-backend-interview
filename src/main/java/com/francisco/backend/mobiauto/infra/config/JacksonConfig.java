@@ -1,4 +1,4 @@
-package com.francisco.backend.mobiauto.infra;
+package com.francisco.backend.mobiauto.infra.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -26,7 +26,6 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
  * For a stable JSON structure, please use Spring Data's PagedModel
  * (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
  * </p>
- *
  */
 @Configuration
 @EnableSpringDataWebSupport(
